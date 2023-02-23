@@ -11,8 +11,7 @@ userRouter.post("/register", async (req, res) => {
     try {
         const user = new UserModel({ name, email, password })
         await user.save();
-        console.log('registered')
-        res.send()
+        res.send('registered')
     } catch (error) {
         res.send('unable to register', error)
     }
