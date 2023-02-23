@@ -3,6 +3,7 @@ const userRouter = express.Router()
 const bcrypt = require('bcrypt')
 const { UserModel } = require('../models/userModel')
 const { FlightModel } = require('../models/flightModel')
+const { BookingModel } = require('../models/bookingModel')
 const jwt = require('jsonwebtoken')
 
 userRouter.get("/", (req, res) => {
@@ -19,7 +20,7 @@ userRouter.post("/register", async (req, res) => {
             const user = new UserModel({ name, email, password: hash })
             await user.save()
             console.log("resgistered")
-            res.send()
+            res.status(201).send()
         });
 
     } catch (error) {
@@ -43,7 +44,7 @@ userRouter.post("/login", async (req, res) => {
                 }
             });
         } else {
-            res.send("login first")
+            res.status(201).send("login first")
         }
     } catch (error) {
         res.send("error while login")
@@ -53,7 +54,7 @@ userRouter.post("/login", async (req, res) => {
 userRouter.get("/flights", async (req, res) => {
     try {
         const flights = await FlightModel.find()
-        res.send(flights)
+        res.status(200).send(flights)
     } catch (error) {
         res.send("unable to register", error)
     }
@@ -64,7 +65,7 @@ userRouter.get("/flights/:id", async (req, res) => {
     console.log(ID)
     try {
         const flights = await FlightModel.find({ "_id": ID })
-        res.send(flights)
+        res.status(200).send(flights)
     } catch (error) {
         res.send("unable to register", error)
     }
@@ -80,7 +81,7 @@ userRouter.post("/flights", async (req, res) => {
         })
         await flight.save()
         console.log("Flight Added")
-        res.send()
+        res.status(201).send()
     } catch (error) {
         res.send("unable to register", error)
     }
@@ -92,7 +93,7 @@ userRouter.patch("/flights/:id", async (req, res) => {
     console.log(ID)
     try {
         await FlightModel.findByIdAndUpdate({ "_id": ID }, payload)
-        res.send("flights updated")
+        res.status(204).send("flights updated")
     } catch (error) {
         res.send("unable to update Flight Data", error)
     }
@@ -103,9 +104,30 @@ userRouter.delete("/flights/:id", async (req, res) => {
     console.log(ID)
     try {
         await FlightModel.findByIdAndDelete({ "_id": ID })
-        res.send("flights Deleted")
+        res.status(202).send("flights Deleted")
     } catch (error) {
         res.send("unable to delete Flight Data", error)
+    }
+})
+
+userRouter.post("/booking", async (req, res) => {
+    const payload = req.body
+    console.log(payload)
+    try {
+        const book = await BookingModel(payload)
+        await book.save();
+        res.send("Flight Booked")
+    } catch (error) {
+        res.send("unable to Book Flight", error)
+    }
+})
+
+userRouter.get("/dashboard", async (req, res) => {
+    try {
+        const flight = await BookingModel.find()
+        res.status(200).send(flight)
+    } catch (error) {
+        res.send("unable to get dashboard", error)
     }
 })
 

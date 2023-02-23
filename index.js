@@ -9,7 +9,6 @@ app.use(cors({origin: "*"}))
 app.use(express.json())
 app.use("/api", userRouter)
 
-
 app.listen(8080, async (req, res) => {
     try {
         await connection
