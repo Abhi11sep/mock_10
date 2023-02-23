@@ -7,7 +7,7 @@ const { BookingModel } = require('../models/bookingModel')
 const jwt = require('jsonwebtoken')
 
 userRouter.get("/", (req, res) => {
-    res.send("WELCOME IN USER SECTION")
+    res.send("WELCOME IN FLIGHT PORTAL")
 })
 
 userRouter.post("/register", async (req, res) => {
@@ -130,7 +130,5 @@ userRouter.get("/dashboard", async (req, res) => {
         res.send("unable to get dashboard", error)
     }
 })
-
-
 
 module.exports = { userRouter }
