@@ -116,7 +116,7 @@ userRouter.post("/booking", async (req, res) => {
     try {
         const book = await BookingModel(payload)
         await book.save();
-        res.send("Flight Booked")
+        res.status(201).send("Flight Booked")
     } catch (error) {
         res.send("unable to Book Flight", error)
     }
